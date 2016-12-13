@@ -14,7 +14,7 @@ def getUniqueUserCount(line):
 
 sc = SparkContext("spark://spark-master:7077", "PopularItems")
 
-data = sc.textFile("/tmp/data/clickdata2.tsv", 2).distinct()     # each worker loads a piece of the data file
+data = sc.textFile("/tmp/data/input.txt", 2).distinct()     # each worker loads a piece of the data file
 
 pairs = data.map(lambda line: line.split("\t"))   # tell each worker to split each line of it's partition
 lists = pairs.groupByKey()
