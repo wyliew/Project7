@@ -3,7 +3,7 @@ from itertools import combinations
 from random import shuffle
 
 def getCombinations(line):
-	return [ (x[0], x[1]) for x in combinations(line[1],2)]
+	return [ (line[0], (x[0], x[1])) for x in combinations(line[1],2)]
 
 def getUniqueUserCount(line):
 	uniqueSet = []
@@ -25,19 +25,11 @@ coclicks = click_pairs.map(lambda line: (line[1], line[0]))
 coclicks_merged = coclicks.reduceByKey(lambda x, y: x + y) \
 				.map(getUniqueUserCount) \
 				.filter(lambda line: line[1] > 2)
-output = lists.flatMap(getCombinations).collect()
-#output = lists.collect()
-for key, value in output:
-	print(key + ':', end='')
-	value = getCombinations([key, value])
-	print(value)
-	#for elem in value:
-	#	print(elem, end=',')
-	#print()
-'''
+
+
 output = coclicks_merged.collect() # bring the data back to the master node so we can print it out
 for pair, count in output:
 	print(pair[0]  + ',' + pair[1] + ':', end='')
 	print(count)
-'''
+
 sc.stop()
