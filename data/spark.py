@@ -10,7 +10,9 @@ data = sc.textFile("/tmp/data/clickdata.tsv", 2).distinct()     # each worker lo
 
 pairs = data.map(lambda line: line.split("\t"))   # tell each worker to split each line of it's partition
 lists = pairs.groupByKey()
-click_pairs = lists.flatMap(getCombinations).filter(lambda line: len(line[1]) > 1)
+click_pairs = lists.flatMap(getCombinations) \
+				.filter(lambda line: len(line[1]) > 1) \
+				.filter(lambda line: line[1][0] != line[1][1])
 #pages = pairs.map(lambda pair: (pair[1], 1))      # re-layout the data to ignore the user id
 #count = pages.reduceByKey(lambda x,y: x+y)        # shuffle the data so that each key is only on one worker
                                                   # and then reduce all the values by adding them together
